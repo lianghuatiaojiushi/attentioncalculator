@@ -23,5 +23,5 @@
 默认服务地址：
 
 ```text
-https://zhuyidao.net
+https://zhuyidao.net (另一个网址：https://zhuyidao.com)
 ```
