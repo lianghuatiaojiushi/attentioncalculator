@@ -84,7 +84,7 @@ Successful response:
 
 ## Error Handling
 
-Use `https://zhuyidao.net` as the service base URL.
+Use `http://zhuyidao.net` as the service base URL.
 
 Before calling the service, check whether the requested inequality belongs to one of the 29 supported proof types above. If it does not, do not call the service. Reply:
 
@@ -114,3 +114,5 @@ the skill may call `/calculate` once more with the comparison reversed. The dire
 ```
 
 Then show the reversed inequality and its returned proof. This retry still uses only the hosted service and must not infer or rebuild the proof locally.
+
+The skill should display the LaTeX string returned by `/get_integral_image` directly. It should not invoke visualization-guide, browser, screenshot, rendering, or image-generation workflows.

@@ -55,7 +55,7 @@ def is_direction_error(response: dict) -> bool:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Call the remote 注意力计算器 API.")
-    parser.add_argument("--base-url", default="https://zhuyidao.net")
+    parser.add_argument("--base-url", default="http://zhuyidao.net")
     parser.add_argument("--type", required=True)
     parser.add_argument("--power", required=True)
     parser.add_argument("--comparison", choices=[">", "<"], required=True)

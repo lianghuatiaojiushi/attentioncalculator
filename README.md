@@ -23,7 +23,7 @@
 默认服务地址：
 
 ```text
-https://zhuyidao.net
+http://zhuyidao.net
 ```
 
 Skill 只调用 `zhuyidao.net`。
