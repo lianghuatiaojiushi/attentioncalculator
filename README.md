@@ -1,6 +1,6 @@
-# 注意力计算器 Skill
+# 注意力计算器.Skill
 
-这是“注意力计算器”的 WorkBuddy/Codex Skill 版本，用于远程调用 [zhuyidao.net](https://zhuyidao.net) 上的注意力计算器服务，生成关于 `e`、`π` 及其相关函数不等式的积分证明。
+这是“注意力计算器”的 Skill 版本，用于远程调用 [zhuyidao.net](https://zhuyidao.net) 上的"注意力计算器"服务，生成关于 `e`、`π` 及其相关函数不等式的积分证明。
 
 ## 使用方式
 
@@ -25,3 +25,11 @@
 ```text
 https://zhuyidao.net (另一个网址：https://zhuyidao.com)
 ```
+
+## 注意力计算器介绍
+
+https://zhuanlan.zhihu.com/p/20960679909
+
+## 如何构造积分证明不等式的方法介绍
+
+https://zhuanlan.zhihu.com/p/669285539
