@@ -84,6 +84,13 @@ Successful response:
 
 ## Error Handling
 
+Before calling the service, check whether the requested inequality belongs to one of the 29 supported proof types above. If it does not, do not call the service. Reply:
+
+```text
+这个不等式目前不在注意力计算器支持的 29 种类型之列。
+目前支持的类型有：pi, e, pi_n, e_q, ln_q, ln_q_square, sin_q, cos_q, tan_q, cot_q, sin_q_degree, cos_q_degree, sin_pi_q, cos_pi_q, arctan_q, arccot_q, sinh_q, cosh_q, tanh_q, coth_q, artanh_q, arcoth_q, gamma, golden, catalan, zeta3, e_pi, varpi, gauss。
+```
+
 If the service returns an error JSON, show the error message. If the service cannot be reached, say:
 
 ```text
@@ -92,3 +99,10 @@ If the service returns an error JSON, show the error message. If the service can
 
 Do not attempt local proof generation.
 
+If `/calculate` fails for the user's original comparison direction, the skill may call `/calculate` once more with the comparison reversed. If the reversed request succeeds, reply:
+
+```text
+你输入的不等号方向可能反了。原式暂未找到证明，但反向不等式可以由注意力计算器生成积分证明。
+```
+
+Then show the reversed inequality and its returned proof. This retry still uses only the hosted service and must not infer or rebuild the proof locally.

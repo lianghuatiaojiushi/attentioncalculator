@@ -15,6 +15,10 @@ import urllib.parse
 import urllib.request
 
 
+def flip_comparison(comparison: str) -> str:
+    return "<" if comparison == ">" else ">"
+
+
 def post_form(base_url: str, path: str, data: dict[str, str]) -> dict:
     body = urllib.parse.urlencode(data).encode("utf-8")
     req = urllib.request.Request(
@@ -44,30 +48,39 @@ def main() -> int:
     args = parser.parse_args()
 
     try:
-        solution = post_form(
-            args.base_url,
-            "/calculate",
-            {
-                "type": args.type,
-                "power": args.power,
-                "comparison": args.comparison,
-                "rational": args.rational,
-            },
-        )
+        request_data = {
+            "type": args.type,
+            "power": args.power,
+            "comparison": args.comparison,
+            "rational": args.rational,
+        }
+        solution = post_form(args.base_url, "/calculate", request_data)
+        comparison = args.comparison
+        reversed_direction = False
+
         if not solution.get("success"):
-            print(json.dumps(solution, ensure_ascii=False, indent=2))
-            return 1
+            reversed_data = dict(request_data)
+            reversed_data["comparison"] = flip_comparison(args.comparison)
+            reversed_solution = post_form(args.base_url, "/calculate", reversed_data)
+            if not reversed_solution.get("success"):
+                print(json.dumps(solution, ensure_ascii=False, indent=2))
+                return 1
+            solution = reversed_solution
+            comparison = reversed_data["comparison"]
+            reversed_direction = True
 
         params = dict(solution["parameters"])
         params.update(
             {
                 "type": args.type,
                 "coef": args.power,
-                "comparison": args.comparison,
+                "comparison": comparison,
                 "rational": args.rational,
             }
         )
         rendered = get_json(args.base_url, "/get_integral_image", params)
+        if reversed_direction:
+            print("你输入的不等号方向可能反了。原式暂未找到证明，但反向不等式可以由注意力计算器生成积分证明。")
         print(rendered.get("equation", ""))
         return 0
     except Exception as exc:
@@ -77,4 +90,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
