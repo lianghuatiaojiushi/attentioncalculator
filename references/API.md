@@ -84,6 +84,8 @@ Successful response:
 
 ## Error Handling
 
+Use `https://zhuyidao.net` as the service base URL.
+
 Before calling the service, check whether the requested inequality belongs to one of the 29 supported proof types above. If it does not, do not call the service. Reply:
 
 ```text
@@ -99,7 +101,13 @@ If the service returns an error JSON, show the error message. If the service can
 
 Do not attempt local proof generation.
 
-If `/calculate` fails for the user's original comparison direction, the skill may call `/calculate` once more with the comparison reversed. If the reversed request succeeds, reply:
+If `/calculate` fails and the server error is:
+
+```text
+要证明的式子不等号方向反了
+```
+
+the skill may call `/calculate` once more with the comparison reversed. The direction judgment comes from the hosted server application; the skill must not compute the truth value locally. If the reversed request succeeds, reply:
 
 ```text
 你输入的不等号方向可能反了。原式暂未找到证明，但反向不等式可以由注意力计算器生成积分证明。

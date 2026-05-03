@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -27,8 +28,18 @@ def post_form(base_url: str, path: str, data: dict[str, str]) -> dict:
         headers={"Content-Type": "application/x-www-form-urlencoded"},
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        try:
+            payload = json.loads(exc.read().decode("utf-8"))
+            if isinstance(payload, dict):
+                payload["_http_status"] = exc.code
+                return payload
+        except Exception:
+            pass
+        raise
 
 
 def get_json(base_url: str, path: str, params: dict[str, str]) -> dict:
@@ -36,6 +47,10 @@ def get_json(base_url: str, path: str, params: dict[str, str]) -> dict:
     url = url + "?" + urllib.parse.urlencode(params)
     with urllib.request.urlopen(url, timeout=60) as resp:
         return json.loads(resp.read().decode("utf-8"))
+
+
+def is_direction_error(response: dict) -> bool:
+    return "不等号方向反了" in str(response.get("error", ""))
 
 
 def main() -> int:
@@ -58,7 +73,7 @@ def main() -> int:
         comparison = args.comparison
         reversed_direction = False
 
-        if not solution.get("success"):
+        if not solution.get("success") and is_direction_error(solution):
             reversed_data = dict(request_data)
             reversed_data["comparison"] = flip_comparison(args.comparison)
             reversed_solution = post_form(args.base_url, "/calculate", reversed_data)
@@ -68,6 +83,9 @@ def main() -> int:
             solution = reversed_solution
             comparison = reversed_data["comparison"]
             reversed_direction = True
+        elif not solution.get("success"):
+            print(json.dumps(solution, ensure_ascii=False, indent=2))
+            return 1
 
         params = dict(solution["parameters"])
         params.update(

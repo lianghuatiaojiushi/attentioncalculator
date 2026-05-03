@@ -22,17 +22,13 @@ This skill is intentionally a thin client.
 
 ## Hosted Service
 
-Default service base URL:
+Service base URL:
 
 ```text
 https://zhuyidao.net
 ```
 
-Fallback during HTTP-only deployment:
-
-```text
-http://zhuyidao.net
-```
+Use `zhuyidao.net` only.
 
 ## Workflow
 
@@ -49,7 +45,7 @@ http://zhuyidao.net
    - comparison direction, either `>` or `<`.
    - right rational number, as an integer or fraction.
 3. Submit the values to the remote `/calculate` endpoint.
-4. If `/calculate` fails, try the same request once more with the comparison direction reversed (`>` becomes `<`, `<` becomes `>`).
+4. If `/calculate` fails because the server returns `要证明的式子不等号方向反了`, try the same request once more with the comparison direction reversed (`>` becomes `<`, `<` becomes `>`). The direction check must come from the hosted server API, not from local calculation in the skill.
 5. If the reversed comparison succeeds, tell the user in Chinese:
 
    ```text
@@ -57,7 +53,7 @@ http://zhuyidao.net
    ```
 
    Then present the reversed inequality and its returned proof.
-6. If both directions fail, show the service error briefly and ask the user to check the type, integer/fraction format, and comparison direction.
+6. If the original request fails for any other reason, or if the reversed request also fails, show the service error briefly and ask the user to check the type, integer/fraction format, and comparison direction.
 7. If `/calculate` succeeds, call `/get_integral_image` with the returned parameters.
 8. Present the returned LaTeX equation to the user.
 9. Briefly explain that the non-negativity of the displayed integral proves the inequality.
