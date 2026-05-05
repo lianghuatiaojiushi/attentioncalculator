@@ -55,7 +55,7 @@ Use `zhuyidao.net` only.
    Then present the reversed inequality and its returned proof.
 6. If the original request fails for any other reason, or if the reversed request also fails, show the service error briefly and ask the user to check the type, integer/fraction format, and comparison direction.
 7. If `/calculate` succeeds, call `/get_integral_image` with the returned parameters.
-8. Present the returned LaTeX equation directly to the user. Do not request, read, or generate any visualization guide.
+8. Present the returned LaTeX equation directly to the user as a Markdown math block, using `$$` delimiters. Do not put the formula in a code block. Do not request, read, or generate any visualization guide.
 9. Briefly explain that the non-negativity of the displayed integral proves the inequality.
 
 Read `references/API.md` when exact endpoint parameters are needed.
@@ -65,8 +65,15 @@ Read `references/API.md` when exact endpoint parameters are needed.
 Return:
 
 - the normalized inequality requested by the user;
-- the generated integral proof in LaTeX;
+- the generated integral proof as a Markdown math block, for example:
+
+  ```text
+  $$
+  e-\frac{19}{7}=\int_0^1 \cdots dx>0
+  $$
+  ```
+
 - a short note that the computation was performed by the remote 注意力计算器 service.
 
 Never state or imply that the skill contains the underlying coefficient tables.
-Do not call browser, screenshot, rendering, visual-guide, or image-generation workflows. The expected output is the LaTeX formula returned by `/get_integral_image`.
+Do not call browser, screenshot, rendering, visual-guide, or image-generation workflows. The expected output is the LaTeX formula returned by `/get_integral_image`, wrapped with `$$` so the chat UI can render it as math when supported.

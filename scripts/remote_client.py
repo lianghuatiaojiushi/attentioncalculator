@@ -53,6 +53,13 @@ def is_direction_error(response: dict) -> bool:
     return "不等号方向反了" in str(response.get("error", ""))
 
 
+def as_math_block(equation: str) -> str:
+    equation = equation.strip()
+    if equation.startswith("$$") or equation.startswith("\\["):
+        return equation
+    return f"$$\n{equation}\n$$"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Call the remote 注意力计算器 API.")
     parser.add_argument("--base-url", default="http://zhuyidao.net")
@@ -99,7 +106,7 @@ def main() -> int:
         rendered = get_json(args.base_url, "/get_integral_image", params)
         if reversed_direction:
             print("你输入的不等号方向可能反了。原式暂未找到证明，但反向不等式可以由注意力计算器生成积分证明。")
-        print(rendered.get("equation", ""))
+        print(as_math_block(rendered.get("equation", "")))
         return 0
     except Exception as exc:
         print(f"远程注意力计算器服务暂时不可用，请稍后再试。({exc})", file=sys.stderr)
