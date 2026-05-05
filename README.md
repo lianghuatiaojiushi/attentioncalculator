@@ -14,10 +14,14 @@
 用注意力计算器生成 e < 3 的积分证明
 ```
 
+## 构造积分证明不等式的原理介绍
+
+https://zhuanlan.zhihu.com/p/669285539
+
 ## 注意力计算器 (zhuyidao.com/zhuyidao.net) 介绍
 
 https://zhuanlan.zhihu.com/p/20960679909
 
-## 构造积分证明不等式的原理介绍
+## 注意力计算器.skill介绍
 
-https://zhuanlan.zhihu.com/p/669285539
+https://zhuanlan.zhihu.com/p/2035023183380746326
